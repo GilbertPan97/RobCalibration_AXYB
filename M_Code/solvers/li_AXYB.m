@@ -1,24 +1,24 @@
-function [X, Y] = li_AXYB(A, B)
+function [X, Y] = li_AXYB(AA, BB)
 % Solves the problem AX = YB
 % Simultaneous robot-world and hand-eye calibration using
 % dual-quaternions and Kronecker product
 % (Aiguo Li, Lin Wang and Defeng Wu)
 % 
-%   Input: A, B are 4 x 4 x n homogeneous matrices
+%   Input: AA, BB are 4 x 4 x n homogeneous matrices
 %   Output: X, Y are 4 x 4 homogeneous matrices
 %
 %   Mili Shah
 %   July, 2014
 
-    n = size(A, 3);    % size of data
+    n = size(AA, 3);    % size of data
     
     A = zeros(12*n,24);
     b = zeros(12*n,1);
     for i = 1:n
-        Ra = A(1:3,1:3,i);
-        Rb = B(1:3,1:3,i);
-        ta = A(1:3,4,i);
-        tb = B(1:3,4,i);
+        Ra = AA(1:3,1:3,i);
+        Rb = BB(1:3,1:3,i);
+        ta = AA(1:3,4,i);
+        tb = BB(1:3,4,i);
         A(12*i-11:12*i-3,1:18) = [kron(Ra,eye(3)) kron(-eye(3),Rb')];
         A(12*i-2:12*i,10:24) = [kron(eye(3),tb') -Ra eye(3)];
         b(12*i-2:12*i) = ta;
